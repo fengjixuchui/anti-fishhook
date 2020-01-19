@@ -182,9 +182,10 @@ private func rebindLazySymbol(symbol: String,
     return true
 }
 
-// Not Release
+/*  Not Release
+ 
 // if symbol is non_lazy_symbol
-// ImageLoader::recursiveBind => doBind => eachBind => bindAt => findByExportedSymbol(dlsym)
+// ImageLoader::recursiveBind => doBind => eachBind => bindAt => findByExportedSymbol
 @inline(__always)
 private func rebindNonLazySymbol(_ symbol: String,
                                     image: UnsafePointer<mach_header>,
@@ -231,10 +232,11 @@ Label: switch opcode {
         }
     }
 }
-
+ 
+*/
 
 // if symbol is non_lazy_symbol
-// ImageLoader::recursiveBind => doBind => eachBind => bindAt => findByExportedSymbol(dlsym)
+// ImageLoader::recursiveBind => doBind => eachBind => bindAt => findByExportedSymbol
 @inline(__always)
 private func rebindNonLazySymbol2(_ symbol: String,
                                     image: UnsafePointer<mach_header>,
