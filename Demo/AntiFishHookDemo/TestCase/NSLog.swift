@@ -13,22 +13,19 @@ import InsertDyld
 typealias NewSwiftNSLog = @convention(thin) (_ format: String, _ args: CVarArg...) -> Void
 
 func newNSLog(_ format: String, _ args: CVarArg...) {
-    print("I(swift_nslog) have been fishhook 😂")
+    print("I(swift_nslog) has been fishhook 😂")
 }
 
 func testSwiftNSLog() {
     print("\n======> Swift_Foudation.NSLog test:")
     
     let nslogSymbol = "$s10Foundation5NSLogyySS_s7CVarArg_pdtF"
-//    if let name = swift_demangle("_" + nslogSymbol) {
-//        print("_$s10Foundation5NSLogyySS_s7CVarArg_pdtF Demangle Name :", name, "\n")
-//    }
-    let nslog: NewSwiftNSLog = newNSLog
     
-    fishhookSwiftFoudationNSLog(nslogSymbol, newMethod: unsafeBitCast(nslog, to: UnsafeMutableRawPointer.self))
-    NSLog("Swift NSLog test。。。")
+    let myNSLog: NewSwiftNSLog = newNSLog
+    fishhookSwiftFoudationNSLog(nslogSymbol, newMethod: unsafeBitCast(myNSLog, to: UnsafeMutableRawPointer.self))
+    NSLog("Swift's NSLog has not been fishhook。。。")
     
-    resetSymbol(nslogSymbol) // original: _$s10Foundation5NSLogyySS_s7CVarArg_pdtF
+    FishHookChecker.denyFishHook(nslogSymbol)
     NSLog("Swift NSLog test success🚀🚀🚀")
 }
 

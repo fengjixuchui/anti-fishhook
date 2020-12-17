@@ -7,7 +7,7 @@
 //
 
 #import "PrintfTestHelp.h"
-#include "antiFishhook-Swift.h"
+#import "antiFishhook-Swift.h"
 
 @implementation PrintfTestHelp
 
@@ -17,7 +17,7 @@
 }
 
 + (void)antiFishhook {
-    resetSymbol(@"printf");
+//    resetSymbol(@"printf");
 }
 
 @end

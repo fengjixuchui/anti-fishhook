@@ -6,6 +6,7 @@ include `fishhook` and `anti-fishhook`
 [fishhook]: https://github.com/facebook/fishhook
 [Swift Name Mangling]: https://www.mikeash.com/pyblog/friday-qa-2014-08-15-swift-name-mangling.html
 
+[How it's work](https://github.com/TannerJin/IOSSecuritySuite/blob/master/IOSSecuritySuite/FishHookChecker.swift#L13)
 
 ### Note
 
@@ -14,46 +15,36 @@ include `fishhook` and `anti-fishhook`
 
 ## Usage
 
-### antiFishhook(Swift)
+### antiFishhook
 
 ```swift
 import antiFishhook
 
-resetSymbol("$s10Foundation5NSLogyySS_s7CVarArg_pdtF")  // Swift's Foudation.NSLog  
+FishHookChecker.denyFishHook("$s10Foundation5NSLogyySS_s7CVarArg_pdtF")  // Swift's Foudation.NSLog  
 NSLog("Hello AntiFishHook")
 
-resetSymbol("printf")                                  // printf
+FishHookChecker.denyFishHook("printf")                                  // printf
 printf("Hello AntiFishHook")
 ```
 
-### antiFishhook(C/Objc)
 
-```Objective-C
-#include "antiFishhook-Swift.h"
-
-+ (void)antiFishhook {
-    resetSymbol(@"$s10Foundation5NSLogyySS_s7CVarArg_pdtF");  // Swift's Foudation.NSLog
-    resetSymbol(@"printf");                                 // printf
-}
-```
-
-### fishhook(just for Swift)
+### fishhook
 
 ```swift
 typealias MyNSLog = @convention(thin) (_ format: String, _ args: CVarArg...) -> Void
 
-func my_NSLog(_ format: String, _ args: CVarArg...) {
+func myNSLog(_ format: String, _ args: CVarArg...) {
     print("Hello fishHook")
 }
 
-let my_nslog: MyNSLog  = my_NSLog
-let my_nslog_pointer = unsafeBitCast(my_nslog, to: UnsafeMutableRawPointer.self)
-var orig_nslog_pointer: UnsafeMutableRawPointer?
+let selfNSLog: MyNSLog  = myNSLog
+let selfNSLogPointer = unsafeBitCast(selfNSLog, to: UnsafeMutableRawPointer.self)
+var origNSLogPointer: UnsafeMutableRawPointer?
 
-replaceSymbol("$s10Foundation5NSLogyySS_s7CVarArg_pdtF", newMethod: my_nslog_pointer, oldMethod: &orig_nslog_pointer)
+FishHook.replaceSymbol("$s10Foundation5NSLogyySS_s7CVarArg_pdtF", newMethod: selfNSLogPointer, oldMethod: &origNSLogPointer)
 
 NSLog("Hello World")
-// print Hello fishHook
+// will print Hello fishHook
 
 ```
 
